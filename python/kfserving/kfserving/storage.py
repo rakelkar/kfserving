@@ -97,20 +97,33 @@ class Storage(object): # pylint: disable=too-few-public-methods
         match = re.search(_BLOB_RE, uri)
         account_name = match.group(1)
         storage_url = match.group(2)
-        container_name, prefix = storage_url.split("/", 1)
+
+        container_name = storage_url
+        prefix = ""
+        if "/" in storage_url:
+            container_name, prefix = storage_url.split("/", 1)
+            if prefix.endswith("/"):
+                prefix = prefix[:-1]
 
         logging.info("Connecting to BLOB account: %s, contianer: %s", account_name, container_name)
+
         block_blob_service = BlockBlobService(account_name=account_name)
         blobs = block_blob_service.list_blobs(container_name, prefix=prefix)
 
         for blob in blobs:
             if "/" in blob.name:
-                head, _ = os.path.split(blob.name)
+                head, tail = os.path.split(blob.name)
+                if head.startswith(prefix):
+                    head = head[len(prefix):]
+                if head.startswith("/"):
+                    head = head[1:]
                 dir_path = os.path.join(out_dir, head)
                 if not os.path.isdir(dir_path):
                     os.makedirs(dir_path)
+                dest_path = os.path.join(dir_path, tail)
+            else:
+                dest_path = os.path.join(out_dir, blob.name)
 
-            dest_path = os.path.join(out_dir, blob.name)
             logging.info("Downloading: %s", dest_path)
             block_blob_service.get_blob_to_path(container_name, blob.name, dest_path)
 
