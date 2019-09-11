@@ -178,3 +178,7 @@ func PredictorURL(metadata v1.ObjectMeta, isCanary bool) string {
 	}
 	return fmt.Sprintf("http://%s.%s.svc.cluster.local", DefaultPredictorServiceName(metadata.Name), metadata.Namespace)
 }
+
+func VirtualServiceName(name string) string {
+	return name + "-vs"
+}
