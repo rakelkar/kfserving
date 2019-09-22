@@ -187,6 +187,8 @@ type CustomSpec struct {
 type EndpointStatusMap map[constants.KFServiceEndpoint]*StatusConfigurationSpec
 
 // KFServiceStatus defines the observed state of KFService
+type EndpointStatusMap map[KFServiceEndpoint]* StatusConfigurationSpec
+
 type KFServiceStatus struct {
 	duckv1beta1.Status `json:",inline"`
 	URL                string             `json:"url,omitempty"`
