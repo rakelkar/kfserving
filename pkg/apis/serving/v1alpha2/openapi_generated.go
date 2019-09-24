@@ -348,10 +348,9 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 				"github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.EndpointSpec"},
 		},
 		"github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.KFServiceStatus": {
-			Schema: spec.Schema{
-				SchemaProps: spec.SchemaProps{
-					Description: "KFServiceStatus defines the observed state of KFService",
-					Properties: map[string]spec.Schema{
+			Schema: openapispec.Schema{
+				SchemaProps: openapispec.SchemaProps{
+					Properties: map[string]openapispec.Schema{
 						"observedGeneration": {
 							SchemaProps: spec.SchemaProps{
 								Description: "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
@@ -378,18 +377,18 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 								},
 							},
 						},
-						"url": {
-							SchemaProps: spec.SchemaProps{
+						"Url": {
+							SchemaProps: openapispec.SchemaProps{
 								Type:   []string{"string"},
 								Format: "",
 							},
 						},
 						"default": {
-							SchemaProps: spec.SchemaProps{
+							SchemaProps: openapispec.SchemaProps{
 								Type: []string{"object"},
-								AdditionalProperties: &spec.SchemaOrBool{
-									Schema: &spec.Schema{
-										SchemaProps: spec.SchemaProps{
+								AdditionalProperties: &openapispec.SchemaOrBool{
+									Schema: &openapispec.Schema{
+										SchemaProps: openapispec.SchemaProps{
 											Ref: ref("github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.StatusConfigurationSpec"),
 										},
 									},
@@ -397,11 +396,11 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 							},
 						},
 						"canary": {
-							SchemaProps: spec.SchemaProps{
+							SchemaProps: openapispec.SchemaProps{
 								Type: []string{"object"},
-								AdditionalProperties: &spec.SchemaOrBool{
-									Schema: &spec.Schema{
-										SchemaProps: spec.SchemaProps{
+								AdditionalProperties: &openapispec.SchemaOrBool{
+									Schema: &openapispec.Schema{
+										SchemaProps: openapispec.SchemaProps{
 											Ref: ref("github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.StatusConfigurationSpec"),
 										},
 									},
@@ -658,6 +657,12 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 								Format: "",
 							},
 						},
+						"host": {
+							SchemaProps: openapispec.SchemaProps{
+								Type:   []string{"string"},
+								Format: "",
+							},
+						},
 						"replicas": {
 							SchemaProps: spec.SchemaProps{
 								Type:   []string{"integer"},
@@ -775,6 +780,41 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 			},
 			Dependencies: []string{
 				"github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.CustomSpec"},
+		},
+		"github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.VirtualServiceStatus": {
+			Schema: openapispec.Schema{
+				SchemaProps: openapispec.SchemaProps{
+					Description: "\n VirtualServiceStatus captures the status of the virtual service",
+					Properties: map[string]openapispec.Schema{
+						"URL": {
+							SchemaProps: openapispec.SchemaProps{
+								Type:   []string{"string"},
+								Format: "",
+							},
+						},
+						"CanaryWeight": {
+							SchemaProps: openapispec.SchemaProps{
+								Type:   []string{"integer"},
+								Format: "int32",
+							},
+						},
+						"DefaultWeight": {
+							SchemaProps: openapispec.SchemaProps{
+								Type:   []string{"integer"},
+								Format: "int32",
+							},
+						},
+						"Status": {
+							SchemaProps: openapispec.SchemaProps{
+								Ref: ref("knative.dev/pkg/apis/duck/v1beta1.Status"),
+							},
+						},
+					},
+					Required: []string{"URL", "CanaryWeight", "DefaultWeight", "Status"},
+				},
+			},
+			Dependencies: []string{
+				"knative.dev/pkg/apis/duck/v1beta1.Status"},
 		},
 		"github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.XGBoostSpec": {
 			Schema: spec.Schema{
