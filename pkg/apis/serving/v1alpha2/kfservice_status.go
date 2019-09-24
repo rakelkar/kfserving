@@ -57,6 +57,7 @@ var canaryConditionsMap = map[constants.KFServiceEndpoint]apis.ConditionType{
 // KFService Ready condition is depending on default predictor and route readiness condition
 // canary readiness condition only present when canary is used and currently does
 // not affect KFService readiness condition.
+// TODO (rakelkar) is it possible to make this dynamic somehow so that it has Transformer and Predictor when they are present?
 var conditionSet = apis.NewLivingConditionSet(
 	DefaultPredictorReady,
 	RoutesReady,
@@ -145,7 +146,7 @@ func (ss *KFServiceStatus) PropagateRouteStatus(rs *knservingv1alpha1.RouteStatu
 	propagateRouteStatus(rs, ss.Default)
 	propagateRouteStatus(rs, ss.Canary)
 
-	rc := rs.GetCondition(knservingv1alpha1.RouteConditionReady)
+	rc := vs.GetCondition(knservingv1alpha1.RouteConditionReady)
 
 	switch {
 	case rc == nil:

@@ -204,6 +204,17 @@ type StatusConfigurationSpec struct {
 	Traffic  int    `json:"traffic,omitempty"`
 }
 
+// KFServiceStatus defines the observed state of KFService
+// TODO (rakelkar) okay to depend on constants from types?
+type EndpointStatusMap map[constants.KFServiceEndpoint]*StatusConfigurationSpec
+
+type KFServiceStatus struct {
+	duckv1beta1.Status `json:",inline"`
+	URL                string            `json:"Url,omitempty"`
+	Default            EndpointStatusMap `json:"default,omitempty"`
+	Canary             EndpointStatusMap `json:"canary,omitempty"`
+}
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
@@ -230,6 +241,15 @@ type KFServiceList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []KFService `json:"items"`
+}
+
+//  VirtualServiceStatus captures the status of the virtual service
+type VirtualServiceStatus struct {
+	URL           string
+	CanaryWeight  int
+	DefaultWeight int
+
+	duckv1beta1.Status
 }
 
 func init() {

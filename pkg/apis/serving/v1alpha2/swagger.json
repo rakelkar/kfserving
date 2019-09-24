@@ -243,8 +243,10 @@
       }
     },
     "v1alpha2.KFServiceStatus": {
-      "description": "KFServiceStatus defines the observed state of KFService",
       "properties": {
+        "Url": {
+          "type": "string"
+        },
         "canary": {
           "type": "object",
           "additionalProperties": {
@@ -270,9 +272,6 @@
           "description": "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
           "type": "integer",
           "format": "int64"
-        },
-        "url": {
-          "type": "string"
         }
       }
     },
@@ -490,6 +489,31 @@
         },
         "serviceAccountName": {
           "description": "ServiceAccountName is the name of the ServiceAccount to use to run the service",
+          "type": "string"
+        }
+      }
+    },
+    "v1alpha2.VirtualServiceStatus": {
+      "description": "\n VirtualServiceStatus captures the status of the virtual service",
+      "required": [
+        "URL",
+        "CanaryWeight",
+        "DefaultWeight",
+        "Status"
+      ],
+      "properties": {
+        "CanaryWeight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "DefaultWeight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Status": {
+          "$ref": "#/definitions/knative.dev.pkg.apis.duck.v1beta1.Status"
+        },
+        "URL": {
           "type": "string"
         }
       }
