@@ -77,21 +77,40 @@ func (ss *KFServiceStatus) GetCondition(t apis.ConditionType) *apis.Condition {
 
 // PropagateDefaultStatus propagates the status for the default spec
 func (ss *KFServiceStatus) PropagateDefaultStatus(endpoint constants.KFServiceEndpoint, defaultStatus *knservingv1alpha1.ServiceStatus) {
-	statusSpec := ss.Default[endpoint]
+	if ss.Default == nil {
+		emptyStatusMap := make(EndpointStatusMap)
+		ss.Default = &emptyStatusMap
+	}
 	conditionType := defaultConditionsMap[endpoint]
-
+	statusSpec, ok := (*ss.Default)[endpoint]
+	if !ok {
+		statusSpec = &StatusConfigurationSpec{}
+		(*ss.Default)[endpoint] = statusSpec
+	}
 	ss.propagateStatus(statusSpec, conditionType, defaultStatus)
 }
 
+// PropagateCanaryStatus propagates the status for the canary spec
 func (ss *KFServiceStatus) PropagateCanaryStatus(endpoint constants.KFServiceEndpoint, canaryStatus *knservingv1alpha1.ServiceStatus) {
-	statusSpec := ss.Canary[endpoint]
 	conditionType := canaryConditionsMap[endpoint]
 
 	// reset status if canaryServiceStatus is nil
 	if canaryStatus == nil {
-		ss.Canary = EndpointStatusMap{}
+		emptyStatusMap := make(EndpointStatusMap)
+		ss.Canary = &emptyStatusMap
 		conditionSet.Manage(ss).ClearCondition(conditionType)
 		return
+	}
+
+	if ss.Canary == nil {
+		emptyStatusMap := make(EndpointStatusMap)
+		ss.Canary = &emptyStatusMap
+	}
+
+	statusSpec, ok := (*ss.Canary)[endpoint]
+	if !ok {
+		statusSpec = &StatusConfigurationSpec{}
+		(*ss.Canary)[endpoint] = statusSpec
 	}
 
 	ss.propagateStatus(statusSpec, conditionType, canaryStatus)

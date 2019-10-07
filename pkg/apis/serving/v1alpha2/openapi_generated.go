@@ -348,9 +348,10 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 				"github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.EndpointSpec"},
 		},
 		"github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.KFServiceStatus": {
-			Schema: openapispec.Schema{
-				SchemaProps: openapispec.SchemaProps{
-					Properties: map[string]openapispec.Schema{
+			Schema: spec.Schema{
+				SchemaProps: spec.SchemaProps{
+					Description: "KFServiceStatus defines the observed state of KFService",
+					Properties: map[string]spec.Schema{
 						"observedGeneration": {
 							SchemaProps: spec.SchemaProps{
 								Description: "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
@@ -377,8 +378,8 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 								},
 							},
 						},
-						"Url": {
-							SchemaProps: openapispec.SchemaProps{
+						"url": {
+							SchemaProps: spec.SchemaProps{
 								Type:   []string{"string"},
 								Format: "",
 							},
@@ -396,11 +397,11 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 							},
 						},
 						"default": {
-							SchemaProps: openapispec.SchemaProps{
+							SchemaProps: spec.SchemaProps{
 								Type: []string{"object"},
-								AdditionalProperties: &openapispec.SchemaOrBool{
-									Schema: &openapispec.Schema{
-										SchemaProps: openapispec.SchemaProps{
+								AdditionalProperties: &spec.SchemaOrBool{
+									Schema: &spec.Schema{
+										SchemaProps: spec.SchemaProps{
 											Ref: ref("github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.StatusConfigurationSpec"),
 										},
 									},
@@ -408,11 +409,11 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 							},
 						},
 						"canary": {
-							SchemaProps: openapispec.SchemaProps{
+							SchemaProps: spec.SchemaProps{
 								Type: []string{"object"},
-								AdditionalProperties: &openapispec.SchemaOrBool{
-									Schema: &openapispec.Schema{
-										SchemaProps: openapispec.SchemaProps{
+								AdditionalProperties: &spec.SchemaOrBool{
+									Schema: &spec.Schema{
+										SchemaProps: spec.SchemaProps{
 											Ref: ref("github.com/kubeflow/kfserving/pkg/apis/serving/v1alpha2.StatusConfigurationSpec"),
 										},
 									},
